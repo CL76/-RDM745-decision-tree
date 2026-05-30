@@ -3,7 +3,17 @@ Onglet de l'arbre de décision pour la classification du dispositif médical.
 """
 
 import streamlit as st
-from database import init_db, add_dispositif
+from database import Database
+
+def init_db():
+    if "db" not in st.session_state:
+        st.session_state.db = Database()
+    return st.session_state.db
+
+def add_dispositif(nom, reference, classe, categorie, materiau, description):
+    db = init_db()
+    return db.add_dispositif(nom, reference, classe, categorie, materiau, description)
+
 
 
 def show_tab_decision_tree():
