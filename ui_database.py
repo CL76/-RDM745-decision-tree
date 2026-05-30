@@ -24,18 +24,15 @@ def show_tab_database():
     # INFO BAR — ÉTABLISSEMENT
     # ─────────────────────────────────────────────
     st.subheader("🏥 Établissement")
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        etablissement = st.text_input(
-            "Nom de l'établissement",
-            value=db.db["etablissement"],
-            placeholder="Centre François Baclesse"
-        )
-    with col2:
-        if st.button("💾 Sauvegarder", use_container_width=True):
-            db.db["etablissement"] = etablissement
-            st.success("Établissement sauvegardé !")
-            st.rerun()
+    etablissement = st.text_input(
+        "Nom de l'établissement",
+        value=db.db["etablissement"],
+        placeholder="Centre François Baclesse",
+        key="etablissement_input"
+    )
+    if etablissement != db.db["etablissement"]:
+        db.db["etablissement"] = etablissement
+        st.success("✅ Établissement mis à jour !")
     
     # ─────────────────────────────────────────────
     # STATS
