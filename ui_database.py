@@ -60,7 +60,7 @@ def show_tab_database():
             try:
                 content = uploaded_file.read().decode("utf-8")
                 data = json.loads(content)
-               if "version" not in data or "dispositifs" not in
+               if "version" not in data or "dispositifs" not in data
                     st.error("❌ Format JSON invalide")
                 else:
                     db.from_json(content)
