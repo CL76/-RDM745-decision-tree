@@ -70,11 +70,26 @@ def show_tab_database():
         if uploaded_file is not None:
             try:
                 content = uploaded_file.read().decode("utf-8")
-                db.from_json(content)
-                st.success("✅ Base chargée avec succès !")
-                st.rerun()
+                data = json.loads(content)
+                if "version" not in data or "dispositifs" not in 
+                    st.error("❌ Format JSON invalide")
+                else:
+                    db.from_json(content)
+                    # ← PAS de st.rerun() ici !
+                    st.success(f"✅ Base chargée avec succès !")
+                    st.info(f"""
+                    📊 **Contenu importé :**
+                    - {len(data['dispositifs'])} dispositif(s)
+                    - {len(data['declarations'])} déclaration(s)
+                    - {len(data['tracabilite'])} entrée(s) de traçabilité
+                    - Établissement : {data.get('etablissement', 'Non renseigné')}
+                    """)
+                    st.balloons()  # 🎈 petit effet visuel !
+            except json.JSONDecodeError:
+                st.error("❌ Fichier JSON invalide — vérifiez le contenu")
             except Exception as e:
-                st.error(f"❌ Erreur de chargement : {e}")
+                st.error(f"❌ Erreur inattendue : {e}")
+            
     
     with tab_imp_exp2:
         st.markdown("""
